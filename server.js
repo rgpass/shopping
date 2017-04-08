@@ -42,9 +42,9 @@ app.use(express.static('public'));
 
 // Register routes
 // (1) Pull in the controller routes
-// const itemsController = require('./controller/items');
+const itemsController = require('./controllers/items');
 // (2) Register a prefix to those routes
-// app.use('/items', itemsController);
+app.use('/api/items', itemsController);
 
 
 // Heroku uses its own port so we can't just say use 3000
