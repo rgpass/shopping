@@ -63,7 +63,7 @@
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 7);
+/******/ 	return __webpack_require__(__webpack_require__.s = 11);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -92,12 +92,42 @@ module.exports = HomeController;
 
 /***/ }),
 /* 1 */
+/***/ (function(module, exports) {
+
+ItemsController.$inject = ['ItemsService'];
+function ItemsController(ItemsService) {
+	const vm = this;
+
+	vm.items = [];
+
+	// Always have this, regardless of it does anything
+	// could be renamed to doSomethingOnPageLoad if you want
+	activate();
+
+	function activate() {
+		// learning purposes only
+		console.log('ItemsController activated...');
+
+		loadAllTheItems();
+	}
+
+	function loadAllTheItems() {
+		ItemsService.loadAll().then(function resolve(res) {
+			vm.items = res.data.items;
+		});
+	}
+}
+
+module.exports = ItemsController;
+
+/***/ }),
+/* 2 */
 /***/ (function(module, exports, __webpack_require__) {
 
 console.log('Bundled loaded');
 
-const angular = __webpack_require__(5);
-__webpack_require__(3);
+const angular = __webpack_require__(8);
+__webpack_require__(6);
 
 // What's happening
 angular.module('shoppingApp', ['ui.router']).config(routerSetup);
@@ -114,6 +144,9 @@ function routerSetup($stateProvider, $urlRouterProvider) {
 		url: '/',
 		// load up this basic html which includes our own custom component
 		template: '<home></home>'
+	}).state('items', {
+		url: '/items',
+		template: '<items></items>'
 	});
 
 	// catch-all backup route in case someone has a typo
@@ -121,11 +154,11 @@ function routerSetup($stateProvider, $urlRouterProvider) {
 }
 
 /***/ }),
-/* 2 */
+/* 3 */
 /***/ (function(module, exports, __webpack_require__) {
 
 const controller = __webpack_require__(0);
-const template = __webpack_require__(6);
+const template = __webpack_require__(9);
 
 const component = {
 	controller: controller,
@@ -135,7 +168,38 @@ const component = {
 angular.module('shoppingApp').component('home', component);
 
 /***/ }),
-/* 3 */
+/* 4 */
+/***/ (function(module, exports, __webpack_require__) {
+
+const controller = __webpack_require__(1);
+const template = __webpack_require__(10);
+
+const component = {
+	controller: controller,
+	template: template
+};
+
+angular.module('shoppingApp').component('items', component);
+
+/***/ }),
+/* 5 */
+/***/ (function(module, exports) {
+
+angular.module('shoppingApp').service('ItemsService', ItemsService);
+
+ItemsService.$inject = ['$http'];
+function ItemsService($http) {
+	const self = this;
+
+	self.loadAll = loadAll;
+
+	function loadAll() {
+		return $http.get('/api/items');
+	}
+}
+
+/***/ }),
+/* 6 */
 /***/ (function(module, exports) {
 
 /**
@@ -4824,7 +4888,7 @@ angular.module('ui.router.state')
 })(window, window.angular);
 
 /***/ }),
-/* 4 */
+/* 7 */
 /***/ (function(module, exports) {
 
 /**
@@ -38201,26 +38265,35 @@ $provide.value("$locale", {
 !window.angular.$$csp().noInlineStyle && window.angular.element(document.head).prepend('<style type="text/css">@charset "UTF-8";[ng\\:cloak],[ng-cloak],[data-ng-cloak],[x-ng-cloak],.ng-cloak,.x-ng-cloak,.ng-hide:not(.ng-hide-animate){display:none !important;}ng\\:form{display:block;}.ng-animate-shim{visibility:hidden;}.ng-anchor{position:absolute;}</style>');
 
 /***/ }),
-/* 5 */
+/* 8 */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(4);
+__webpack_require__(7);
 module.exports = angular;
 
 
 /***/ }),
-/* 6 */
+/* 9 */
 /***/ (function(module, exports) {
 
 module.exports = "<h1>Home</h1>\n";
 
 /***/ }),
-/* 7 */
+/* 10 */
+/***/ (function(module, exports) {
+
+module.exports = "<div>\n\t<h2>Hello World for items#index</h2>\n\n\t<ul>\n\t\t<li ng-repeat=\"item in $ctrl.items\">\n\t\t\tName: {{ item.name }}, Completed: {{ item.isDone }}\n\t\t</li>\n\t</ul>\n</div>\n";
+
+/***/ }),
+/* 11 */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(1);
 __webpack_require__(2);
-module.exports = __webpack_require__(0);
+__webpack_require__(3);
+__webpack_require__(0);
+__webpack_require__(4);
+__webpack_require__(1);
+module.exports = __webpack_require__(5);
 
 
 /***/ })

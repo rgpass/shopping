@@ -20,6 +20,10 @@ function routerSetup($stateProvider, $urlRouterProvider) {
 			url: '/',
 			// load up this basic html which includes our own custom component
 			template: '<home></home>'
+		})
+		.state('items', {
+			url: '/items',
+			template: '<items></items>'
 		});
 
 	// catch-all backup route in case someone has a typo
