@@ -8,24 +8,21 @@ const router = express.Router();
 // var bodyParser = require('body-parser') //parses information from POST
 // var methodOverride = require('method-override') //used to manipulate POST
 
-// const Item = require('../models/Item');
+const Item = require('../models/item');
 
 router.get('/', function indexAction(req, res) {
-	res.json({ message: 'Hello World' });
+	Item
+		.find({})
+		.select('-__v')
+		.exec(function idkYet(err, items) {
+			if (err) { return res.json({ message: 'Failed to look up items#index' }) }
+
+			res.json({ items: items });
+		})
 });
 
 module.exports = router;
 
-
-
-// // GET
-// router.get('/', function indexAction(request, response) {
-//   Criminal.find(function(error, criminals) {
-//     if(error) response.json({message: 'Could not find any criminal'});
-
-//     response.json({criminals: criminals});
-//   }).select('-__v');
-// });
 
 // // POST
 // router.post('/', function createAction(request, response) {
